@@ -4,9 +4,19 @@ from typing import Optional
 
 
 
+class TokenPayload(BaseModel):  ## jwt payload 용
+    user_id:str
+    exp:int
+    issued_at:int
+    token_type:str = 'access'  # or "refresh"
+    
+    
 class TokenResponse(BaseModel):
-    access_token: str
-    refresh_token: str
+    access_token: Optional[str] = None
+    refresh_token: Optional[str] = None
+    token_type:str = "bearer "
+    exp:int
+
 
 class AccountResponse(BaseModel):
     id:int
