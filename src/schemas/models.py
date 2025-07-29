@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 
 
@@ -10,20 +11,26 @@ class TokenPayload(BaseModel):  ## jwt payload 용
     issued_at:int
     token_type:str = 'access'  # or "refresh"
     
-    
+
+# 응답모델
 class TokenResponse(BaseModel):
     access_token: Optional[str] = None
     refresh_token: Optional[str] = None
     token_type:str = "bearer "
     exp:int
 
-
 class AccountResponse(BaseModel):
-    id:int
+    id:UUID
     email:str
-    pwd_hash:str
     name:str
     sns:Optional[str] = None
+    
+
+#입력모델
+class AccountUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    pwd: Optional[str] = None  # 평문 비밀번호 (입력용)
+
 
 class TrainSession(BaseModel):
     session_id:str
