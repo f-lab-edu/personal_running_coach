@@ -2,9 +2,8 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 
 class DatabaseConfig(BaseSettings):
-    # url: str = Field(default="sqlite+aiosqlite:///./db.sqlite3", alias="DATABASE_URL")
-    # echo: bool = Field(default=True, alias="DATABASE_ECHO")
-    url: str = Field(default="postgresql+asyncpg://postgres:password@localhost:5432/db", alias="DATABASE_URL")
+    url: str = Field(default="sqlite+aiosqlite:///./db.sqlite3", alias="DATABASE_URL")
+    # url: str = Field(default="postgresql+asyncpg://postgres:password@localhost:5432/db", alias="DATABASE_URL")
     echo: bool = Field(default=True, alias="DATABASE_ECHO")
 
 

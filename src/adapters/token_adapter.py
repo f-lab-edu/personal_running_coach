@@ -124,6 +124,6 @@ class TokenAdapter(TokenPort):
     ### 토큰 삭제
     def invalidate_refresh_token(self, jwt_str:str)->bool: 
         # TODO: db 에 저장된 토큰 삭제
-    
+        ...
     
     
