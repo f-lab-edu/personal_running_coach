@@ -23,6 +23,6 @@ async def close_db() -> None:
     await engine.dispose()
 
 # Dependency for FastAPI
-async def get_db():
+async def get_session():
     async with AsyncSessionLocal() as session:
         yield session

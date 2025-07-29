@@ -1,14 +1,13 @@
-from codecs import backslashreplace_errors
+from uuid import UUID, uuid4
 from typing import Optional, List
 from datetime import datetime, timezone
-from uuid import UUID, uuid4
 from sqlmodel import SQLModel, Field, Relationship
 
 # --- User ---
 class User(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     email: str
-    pwd: str
+    hashed_pwd: Optional[str] = Field(default=None) 
     name: str
     created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
 
@@ -29,8 +28,6 @@ class SNSConnect(SQLModel, table=True):
     user_id: UUID = Field(foreign_key="user.id")
     provider: str
     sns_id: str
-    refresh_token: str
-    access_token: str
 
     user: Optional[User] = Relationship(back_populates="sns_connects")
 
