@@ -7,14 +7,13 @@ from schemas.models import AccountResponse, AccountUpdateRequest
 from infra.db.orm.models import User
 from infra.db.storage import repo
 from infra.db.storage.session import get_session
-from adapters.token_adapter import TokenAdapter
 from config.logger import get_logger
 from config import constants
 
 
 logger = get_logger(__name__)
 
-class AcountAdapter(AccountPort):
+class AccountAdapter(AccountPort):
     def __init__(self):
         pass
         
@@ -129,7 +128,8 @@ class AcountAdapter(AccountPort):
             logger.exception(str(e))
             raise HTTPException(status_code=500, detail="Internal server error")
         
-    def oauth_google(self, email:str, pwd:str)->AccountResponse : 
+    # https://blog.neonkid.xyz/262
+    async def oauth_google(self, auth_code:str)->AccountResponse : 
         ...
         
     async def deactivate_account(self, email: str, db: AsyncSession = Depends(get_session)) -> bool:

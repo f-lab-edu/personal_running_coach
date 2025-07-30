@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 from schemas.models import TokenResponse
-
+from interfaces.api.auth_google import google_router
 
 router = APIRouter(prefix="/auth")
-
+router.include_router(google_router)
 
 
 @router.post("/login", response_model=TokenResponse)
@@ -13,11 +13,6 @@ async def login(email:str, pwd:str):
 
 @router.post("/signup")
 async def signup(email:str, pwd:str):
-    
-    return
-
-@router.get("/oauth/google", response_model=TokenResponse)
-async def login(email:str, pwd:str):
     
     return
     
