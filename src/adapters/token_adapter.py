@@ -6,7 +6,7 @@ from jose import jwt, JWTError
 from ports.token_port import TokenPort
 from schemas.models import TokenPayload, TokenResponse
 from config.logger import get_logger
-from config import constants 
+from config.settings import token_config
 
 logger = get_logger(__name__)
 auth_scheme = HTTPBearer()
@@ -30,9 +30,11 @@ class TokenAdapter(TokenPort):
             token_type="access"
         )
         try:
-            access = jwt.encode(payload.model_dump(), 
-                                key=constants.JWT_SECRET, 
-                                algorithm=constants.JWT_ALGORITHM)
+            # pydantic v2 에서는 mode='json' 으로 UUID 도 직렬화 됨.
+            # v1 에서는 따로 uuid 직렬화 처리를 해줘야 함.
+            access = jwt.encode(payload.model_dump(mode='json'), 
+                                key=token_config.secret, 
+                                algorithm=token_config.algorithm)
         except JWTError as e:
             logger.exception(f"jwt encoding error {e}")
             raise HTTPException(status_code=500, detail="error while creating token")
@@ -57,8 +59,8 @@ class TokenAdapter(TokenPort):
         )
         try:
             refresh = jwt.encode(payload.model_dump(), 
-                                key=constants.JWT_SECRET, 
-                                algorithm=constants.JWT_ALGORITHM)
+                                key=token_config.secret, 
+                                algorithm=token_config.algorithm)
         except JWTError as e:
             logger.exception(f"jwt encoding error {e}")
             raise HTTPException(status_code=500, detail="error while creating token")
@@ -80,8 +82,8 @@ class TokenAdapter(TokenPort):
         token = cred.credentials
         try:
             payload = jwt.decode(token,
-                                 key=constants.JWT_SECRET,
-                                 algorithms=constants.JWT_ALGORITHM
+                                 key=token_config.secret,
+                                 algorithms=token_config.algorithm
                                  )
             token = TokenPayload(**payload)
             
@@ -104,8 +106,8 @@ class TokenAdapter(TokenPort):
         token = cred.credentials
         try:
             payload = jwt.decode(token,
-                                 key=constants.JWT_SECRET,
-                                 algorithms=constants.JWT_ALGORITHM
+                                 key=token_config.secret,
+                                 algorithms=token_config.algorithm
                                  )
             token = TokenPayload(**payload)
             
