@@ -9,7 +9,7 @@ class User(SQLModel, table=True):
     email: str
     hashed_pwd: Optional[str] = Field(default=None) 
     name: str
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     tokens: List["Token"] = Relationship(back_populates="user")
     sns_connects: List["SNSConnect"] = Relationship(back_populates="user")

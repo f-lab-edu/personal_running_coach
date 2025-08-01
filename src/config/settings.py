@@ -7,7 +7,7 @@ class CommonConfig(BaseSettings):
         env_file = ".env"
         extra = "ignore" 
 
-class JWTConfig(CommonConfig):
+class TokenConfig(CommonConfig):
     secret:str = Field(default="secret", alias="JWT_SECRET")
     algorithm:str = Field(default="HS256", alias="JWT_ALGORITHM")
 
@@ -32,9 +32,10 @@ class GoogleConfig(CommonConfig):
     redirect_uri: str = Field(default="", alias="GOOGLE_REDIRECT_URI")
     scope: str = Field(default="", alias="GOOGLE_SCOPE")
     auth_endpoint: str = Field(default="", alias="GOOGLE_AUTH_ENDPOINT")
-
+    token_url:str = Field(default="https://oauth2.googleapis.com/token")
 
 db = DatabaseConfig()
 cors = CORSConfig()
 web = WebConfig()
 google = GoogleConfig()
+token_config = TokenConfig()
